@@ -35,6 +35,10 @@ public class Distance implements Serializable {
         this.distance = distance;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getFromCity() {
         return fromCity;
     }

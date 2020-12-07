@@ -30,7 +30,6 @@ public class City implements Serializable {
     }
 
     public City(String name, Double latitude, Double longitude) {
-//        this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
