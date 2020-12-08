@@ -46,7 +46,7 @@ public class UploadController {
         }
     }
 
-    @Path("/xml")
+    @Path("/")
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadAndParse(MultipartFormDataInput input) {
@@ -55,19 +55,24 @@ public class UploadController {
         List<InputPart> inputParts = uploadForm.get("uploadedFile");
 
         for (InputPart inputPart : inputParts) {
+            if (inputPart.getMediaType().getSubtype().contains("xml")){
+                try {
+                    InputStream inputStream = inputPart.getBody(InputStream.class, null);
 
-            try {
-                InputStream inputStream = inputPart.getBody(InputStream.class, null);
+                    parseXML(inputStream);
 
-                parseXML(inputStream);
-
-            } catch (IOException | JAXBException e) {
-                e.printStackTrace();
+                } catch (IOException | JAXBException e) {
+                    return Response.serverError().entity(e.getMessage()).build();
+                }
+            }
+            else{
+                return Response.serverError().entity(
+                        "Not supported file format").build();
             }
 
         }
 
-        return Response.status(200).build();
+        return Response.status(200).entity("XML file add to DB successfully").build();
     }
 
     private void parseXML(InputStream inputStream) throws JAXBException {
@@ -75,6 +80,7 @@ public class UploadController {
 
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         CityDistanceList cityDistanceList = (CityDistanceList) unmarshaller.unmarshal(inputStream);
+
         cityService.createAll(cityDistanceList.getCityList());
         distanceService.createAll(cityDistanceList.getDistanceList());
     }

@@ -8,4 +8,8 @@ public interface DistanceService {
     void createDistance(Distance distance);
 
     void createAll(List<Distance> distances);
+
+    Distance findByName(String fromCity, String toCity);
+
+    List<Distance> findAll();
 }

@@ -1,6 +1,5 @@
 package com.trishkin.calculator.dao;
 
-import com.trishkin.calculator.domain.City;
 import com.trishkin.calculator.domain.Distance;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -31,7 +30,7 @@ public class DistanceRepositoryImpl implements DistanceRepository {
     public void create(Distance distance) {
         if (distance != null){
             if (findByName(distance.getFromCity(), distance.getToCity()) == null){
-                entityManager.createNativeQuery("INSERT INTO Distance (id,from_city,to_city,distance) VALUES (?,?, ?, ?)")
+                entityManager.createNativeQuery("INSERT INTO distances_tbl (id,from_city,to_city,distance) VALUES (?,?, ?, ?)")
                         .setParameter(1, distance.getId())
                         .setParameter(2, distance.getFromCity())
                         .setParameter(3, distance.getToCity())
@@ -46,7 +45,7 @@ public class DistanceRepositoryImpl implements DistanceRepository {
         return entityManager.createQuery("SELECT d FROM Distance d WHERE d.fromCity = :from_city AND d.toCity = :to_city", Distance.class)
                 .setParameter("from_city", fromCity)
                 .setParameter("to_city", toCity)
-                .getSingleResult();
+                .getResultList().stream().findFirst().orElse(null);
     }
 
     @Override

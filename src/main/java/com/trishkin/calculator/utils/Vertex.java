@@ -37,12 +37,6 @@ public class Vertex {
         return Objects.hash(label);
     }
 
-    @Override
-    public String toString() {
-        return "Vertex{" +
-                "label='" + label + '\'' +
-                '}';
-    }
 
     public void setPreviousVertex(Vertex previousVertex) {
         this.previousVertex = previousVertex;

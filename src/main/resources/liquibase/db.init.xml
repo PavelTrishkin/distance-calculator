@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.2.xsd">
+    <changeSet author="pavel_t" id="create_cities_table"
+               context="development">
+        <createTable tableName="cities_tbl" schemaName="distance-calculator">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pavel_t" id="create_distances_table"
+               context="development">
+        <createTable tableName="distances_tbl">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="from_city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="distance" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="pavel_t" id="addAutoIncrement">
+        <addAutoIncrement
+                          columnDataType="BIGINT"
+                          columnName="id"
+                          incrementBy="1"
+                          tableName="cities_tbl"/>
+        <addAutoIncrement
+                columnDataType="BIGINT"
+                columnName="id"
+                incrementBy="1"
+                tableName="distances_tbl"/>
+    </changeSet>
+</databaseChangeLog>

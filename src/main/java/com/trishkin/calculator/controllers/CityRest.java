@@ -2,18 +2,14 @@ package com.trishkin.calculator.controllers;
 
 import com.trishkin.calculator.domain.City;
 import com.trishkin.calculator.dto.CityDto;
+import com.trishkin.calculator.exceptions.CityNotFoundException;
 import com.trishkin.calculator.services.CityService;
-
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
 import java.util.List;
 
 
@@ -28,21 +24,32 @@ public class CityRest {
 
     @GET
     @Path("/")
-    @Produces(MediaType.TEXT_HTML)
-    public String getAllCities() {
-        return cityService.getAll().toString();
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<CityDto> getAllCities() {
+        return cityService.getAll();
+    }
+
+    @GET
+    @Path("/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getByName(@PathParam("name") String name){
+        try{
+            return Response.ok().entity(cityService.findCityByName(name)).build();
+        }
+        catch (CityNotFoundException e){
+            return Response.status(Response.Status.NOT_FOUND).entity("Can't found city with name = " + name).build();
+        }
     }
 
 
     @GET
-    @Path("/calc")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Float calcDist(@QueryParam("fromCity") String fromCity,
-                           @QueryParam("toCity") String toCity){
-
-        System.out.println("Calc dist fromCity " + fromCity + " toCity " + toCity);
-
-        return cityService.calculateDist(fromCity, toCity);
+    @Path("/create")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String createCity(@QueryParam("name") String name,
+                             @QueryParam("latitude") Double latitude,
+                             @QueryParam("longitude") Double longitude){
+        City city = new City(name,latitude,longitude);
+        cityService.createCity(city);
+        return city.toString();
     }
-
 }
