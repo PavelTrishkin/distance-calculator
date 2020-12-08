@@ -5,9 +5,9 @@
 </head>
 <body>
    <h1>Upload File with RESTFul WebService</h1>
-   <form action="/distance-calculator/api/upload/xml" method="post" enctype="multipart/form-data">
+   <form action="/distance-calculator/api/upload" method="post" enctype="multipart/form-data">
       <p>
-         Choose a file : <input type="file" name="uploadedFile" />
+         Choose a file : <input type="file" name="uploadedFile" accept="text/xml" />
       </p>
       <input type="submit" value="Upload" />
    </form>

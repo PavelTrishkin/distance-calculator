@@ -1,5 +1,7 @@
 package com.trishkin.calculator.utils;
 
+import com.trishkin.calculator.exceptions.CityNotFoundException;
+
 import java.util.*;
 
 public class Graph {
@@ -28,7 +30,6 @@ public class Graph {
 
     }
 
-
     private int indexOf(String vertexLabel) {
         for (int i = 0; i < vertexList.size(); i++) {
             if (vertexLabel.equals(vertexList.get(i).getLabel())){
@@ -42,29 +43,12 @@ public class Graph {
         return vertexList.size();
     }
 
-//    public void display() {
-//        for (int i = 0; i < getVertexSize(); i++) {
-//            System.out.print(vertexList.get(i));
-//            for (int j = 0; j < getVertexSize(); j++) {
-//                if (adjMat[i][j] > 0) {
-//                    System.out.print("- " + adjMat[i][j] + " -> " + vertexList.get(j));
-//                }
-//            }
-//            System.out.println();
-//        }
-//    }
-
     private void resetVertexState() {
         for (Vertex vertex: vertexList) {
             vertex.setVisited(false);
         }
     }
 
-    private void visitVertex(Vertex vertex, Queue<Vertex> vertexQueue) {
-        System.out.println(vertex);
-        vertexQueue.add(vertex);
-        vertex.setVisited(true);
-    }
 
     public double getDistance(Vertex from, Vertex to) {
         if(from != null && to != null){
@@ -88,15 +72,15 @@ public class Graph {
         return null;
     }
 
-    public Map<Double, Stack<String>> findShortPathViaBfs(String startLabel, String finishLabel) {
+    public Map<Float, Stack<String>> findShortPathViaBfs(String startLabel, String finishLabel) {
         int startIndex = indexOf(startLabel);
         int finishIndex = indexOf(finishLabel);
-        Map<Double, Stack<String>> routes = new HashMap<>();
+        Map<Float, Stack<String>> routes = new HashMap<>();
         if (startIndex == -1) {
-            throw new IllegalArgumentException("Invalid startLabel: " + startLabel);
+            throw new CityNotFoundException("Can't found city with name = " + startLabel + " in Distance matrix");
         }
         if (finishIndex == -1) {
-            throw new IllegalArgumentException("Invalid finishLabel: " + finishLabel);
+            throw new CityNotFoundException("Can't found city with name = " + finishLabel + " in Distance matrix");
         }
 
         Stack<Vertex> vertexStack = new Stack<>();
@@ -115,7 +99,6 @@ public class Graph {
             }
             else {
                 visitVertex(vertex, vertexStack);
-                System.out.println("STACK PEEK " + previous);
                 vertex.setPreviousVertex(previous);
                 if (vertex.getLabel().equals(finishLabel)) {
                     routes.putAll(buildPath(vertex));
@@ -125,28 +108,37 @@ public class Graph {
             }
 
         }
+        resetVertexState();
         return routes;
     }
 
     private void visitVertex(Vertex vertex, Stack<Vertex> vertexStack) {
-        System.out.println(vertex);
         vertexStack.push(vertex);
         vertex.setVisited(true);
     }
 
 
-    private Map<Double, Stack<String>> buildPath(Vertex vertex) {
+    private Map<Float, Stack<String>> buildPath(Vertex vertex) {
         Stack<String> stack = new Stack<>();
         Vertex current = vertex;
-        double dist = 0;
-        Map<Double, Stack<String>> routes = new HashMap<>();
+        float dist = 0;
+        Map<Float, Stack<String>> routes = new HashMap<>();
         while (current != null) {
             stack.push(current.getLabel());
             dist += getDistance(current, current.getPreviousVertex());
             current = current.getPreviousVertex();
         }
 
-        routes.put(dist, stack);
+        routes.put(dist, reversStack(stack));
         return routes;
+    }
+
+    private Stack<String> reversStack(Stack<String> stack){
+        Stack<String> revers = new Stack<>();
+
+        while (!stack.empty()){
+            revers.push(stack.pop());
+        }
+        return revers;
     }
 }

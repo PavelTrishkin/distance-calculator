@@ -16,5 +16,4 @@ public interface CityService {
 
     City findCityByName(String name);
 
-    Float calculateDist(String fromCityName, String toCityName);
 }
