@@ -2,7 +2,6 @@ package com.trishkin.calculator.controllers;
 
 import com.trishkin.calculator.domain.Distance;
 import com.trishkin.calculator.exceptions.CityNotFoundException;
-import com.trishkin.calculator.services.CalculatorService;
 import com.trishkin.calculator.services.DistanceService;
 
 import javax.inject.Inject;

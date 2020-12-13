@@ -4,7 +4,7 @@ import com.trishkin.calculator.domain.Distance;
 
 import java.util.List;
 
-public interface DistanceService {
+public interface DistanceService extends EntityService {
     void createDistance(Distance distance);
 
     void createAll(List<Distance> distances);

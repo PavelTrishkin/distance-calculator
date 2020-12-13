@@ -5,7 +5,7 @@ import com.trishkin.calculator.dto.CityDto;
 
 import java.util.List;
 
-public interface CityService {
+public interface CityService extends EntityService {
     List<CityDto> getAll();
 
     void createCity(City city);
