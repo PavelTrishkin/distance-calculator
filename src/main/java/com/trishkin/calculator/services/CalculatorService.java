@@ -5,7 +5,7 @@ import com.trishkin.calculator.domain.City;
 import java.util.Map;
 import java.util.Stack;
 
-public interface CalculatorService {
+public interface CalculatorService{
     Float calcCrowFlight(City fromCity, City toCity);
 
     Float calcCrowFlight(String fromCity, String toCity);

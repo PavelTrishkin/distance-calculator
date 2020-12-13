@@ -9,5 +9,5 @@ public interface CalculatorRest {
 
    Response calcMatrixDist(String fromCity, String toCity);
 
-   Response calcAllDist(String fromCity, String toCity);
+//   Response calcAllDist(String fromCity, String toCity);
 }
