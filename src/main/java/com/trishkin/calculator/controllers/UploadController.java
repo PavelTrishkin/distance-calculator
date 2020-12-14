@@ -1,9 +1,6 @@
 package com.trishkin.calculator.controllers;
 
-import com.trishkin.calculator.domain.CityDistanceList;
-import com.trishkin.calculator.services.CityService;
-import com.trishkin.calculator.services.DistanceService;
-import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import com.trishkin.calculator.services.UploadService;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import javax.inject.Inject;
@@ -12,12 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.util.List;
-import java.util.Map;
 
 
 
@@ -25,10 +17,7 @@ import java.util.Map;
 public class UploadController {
 
     @Inject
-    private CityService cityService;
-
-    @Inject
-    private DistanceService distanceService;
+    private UploadService uploadService;
 
     @Context
     private ServletContext servletContext;
@@ -50,38 +39,11 @@ public class UploadController {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadAndParse(MultipartFormDataInput input) {
-
-        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-        List<InputPart> inputParts = uploadForm.get("uploadedFile");
-
-        for (InputPart inputPart : inputParts) {
-            if (inputPart.getMediaType().getSubtype().contains("xml")){
-                try {
-                    InputStream inputStream = inputPart.getBody(InputStream.class, null);
-
-                    parseXML(inputStream);
-
-                } catch (IOException | JAXBException e) {
-                    return Response.serverError().entity(e.getMessage()).build();
-                }
-            }
-            else{
-                return Response.serverError().entity(
-                        "Not supported file format").build();
-            }
-
+        try {
+            uploadService.uploadAndParseXml(input);
+            return Response.status(200).entity("XML file add to DB successfully").build();
+        } catch (Exception e) {
+            return Response.serverError().entity(e.getMessage()).build();
         }
-
-        return Response.status(200).entity("XML file add to DB successfully").build();
-    }
-
-    private void parseXML(InputStream inputStream) throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(CityDistanceList.class);
-
-        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        CityDistanceList cityDistanceList = (CityDistanceList) unmarshaller.unmarshal(inputStream);
-
-        cityService.createAll(cityDistanceList.getCityList());
-        distanceService.createAll(cityDistanceList.getDistanceList());
     }
 }

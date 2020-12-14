@@ -20,7 +20,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public List<CityDto> getAll() {
+    public List<CityDto> findAll() {
         return toDtoList(cityRepository.findAll());
     }
 

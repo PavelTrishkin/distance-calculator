@@ -4,7 +4,6 @@ import com.trishkin.calculator.domain.City;
 import com.trishkin.calculator.domain.CrowFlightRoute;
 import com.trishkin.calculator.domain.Route;
 
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 
 public class CrowFlightRouteService extends AbstractRouteService {

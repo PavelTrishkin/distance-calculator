@@ -26,7 +26,7 @@ public class CityRest {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public List<CityDto> getAllCities() {
-        return cityService.getAll();
+        return cityService.findAll();
     }
 
     @GET
