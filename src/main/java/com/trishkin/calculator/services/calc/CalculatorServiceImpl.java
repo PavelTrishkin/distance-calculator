@@ -1,9 +1,10 @@
-package com.trishkin.calculator.services;
+package com.trishkin.calculator.services.calc;
 
 import com.trishkin.calculator.domain.City;
 import com.trishkin.calculator.domain.Distance;
-import com.trishkin.calculator.domain.Route;
 import com.trishkin.calculator.exceptions.CityNotFoundException;
+import com.trishkin.calculator.services.CityService;
+import com.trishkin.calculator.services.DistanceService;
 import com.trishkin.calculator.utils.Graph;
 
 import javax.inject.Inject;

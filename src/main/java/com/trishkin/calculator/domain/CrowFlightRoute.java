@@ -1,6 +1,5 @@
 package com.trishkin.calculator.domain;
 
-import com.trishkin.calculator.services.RouteService;
 
 public class CrowFlightRoute implements Route{
 

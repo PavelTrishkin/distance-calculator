@@ -6,13 +6,17 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class CityRepositoryImpl implements CityRepository {
 
     @Inject
     private EntityManager entityManager;
+
+    private Map<String, City> cityMap = new HashMap<>();
 
     public CityRepositoryImpl() {
     }
@@ -24,12 +28,18 @@ public class CityRepositoryImpl implements CityRepository {
 
     @Override
     public City getCityByName(String name) {
-        List<City> result = entityManager.createQuery("SELECT c FROM City c WHERE c.name = :name", City.class)
-                .setParameter("name", name).getResultList();
-        if(result.isEmpty()){
-            return null;
+        City cityInMap = cityMap.get(name);
+        if (cityInMap == null){
+            List<City> result = entityManager.createQuery("SELECT c FROM City c WHERE c.name = :name", City.class)
+                    .setParameter("name", name).getResultList();
+            City findCity = result.stream().findFirst().orElse(null);
+            cityMap.put(findCity.getName(), findCity);
+            return findCity;
         }
-        return result.stream().findFirst().orElse(null);
+        else {
+            return cityInMap;
+        }
+
     }
 
     @Override

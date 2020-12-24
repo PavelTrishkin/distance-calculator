@@ -17,7 +17,7 @@ public abstract class AbstractRouteService implements RouteService {
     }
 
     @Override
-    public Route createRoute(String fromCity, String toCity) {
+    public final Route createRoute(String fromCity, String toCity) {
 
         System.out.println("CREATING ROUTE");
         return createSpecificRoute(fromCity, toCity);

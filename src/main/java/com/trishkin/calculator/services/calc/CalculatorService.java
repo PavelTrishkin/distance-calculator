@@ -1,4 +1,4 @@
-package com.trishkin.calculator.services;
+package com.trishkin.calculator.services.calc;
 
 import com.trishkin.calculator.domain.City;
 

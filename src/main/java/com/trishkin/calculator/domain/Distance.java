@@ -43,24 +43,12 @@ public class Distance implements Serializable {
         return fromCity;
     }
 
-    public void setFromCity(String fromCity) {
-        this.fromCity = fromCity;
-    }
-
     public String getToCity() {
         return toCity;
     }
 
-    public void setToCity(String toCity) {
-        this.toCity = toCity;
-    }
-
     public Double getDistance() {
         return distance;
-    }
-
-    public void setDistance(Double distance) {
-        this.distance = distance;
     }
 
     @Override
